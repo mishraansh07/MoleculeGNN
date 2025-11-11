@@ -77,5 +77,3 @@ print(f"Predicted Energy: {predicted_energy:.4f}")
 ## Results
 
 The model achieves competitive performance on molecular energy prediction tasks. Training and evaluation metrics are logged during execution.
-
-## Project Structure

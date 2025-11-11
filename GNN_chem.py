@@ -16,16 +16,6 @@ import kagglehub
 
 class MoleculeGNN(nn.Module):
     def __init__(self, input_dim=5, hidden_dim=128, output_dim=1, num_layers=3, dropout=0.2):
-        """
-        A molecular GNN with multiple GINEConv layers for property prediction.
-        
-        Args:
-            input_dim: Number of atomic feature dimensions (5 for H, C, N, O, F)
-            hidden_dim: Width of hidden layers
-            output_dim: Output dimension (1 for energy prediction)
-            num_layers: Number of GINEConv blocks to stack
-            dropout: Regularization probability
-        """
         super().__init__()
 
         self.num_layers = num_layers
@@ -70,7 +60,7 @@ class MoleculeGNN(nn.Module):
 
 
 def atom_to_feature(atom_type):
-    """Convert atom type to one-hot encoded feature vector."""
+
     mapping = {
         'H': [1, 0, 0, 0, 0],
         'C': [0, 1, 0, 0, 0],
@@ -82,16 +72,7 @@ def atom_to_feature(atom_type):
 
 
 def compute_bonds(atoms, cutoff=1.6):
-    """
-    Infer molecular bonds based on distance threshold.
-    
-    Args:
-        atoms: List of atom dictionaries with 'xyz' coordinates
-        cutoff: Distance threshold in Angstroms (default: 1.6)
-    
-    Returns:
-        List of edge pairs [i, j]
-    """
+
     coords = np.array([a["xyz"] for a in atoms])
     edges = []
     for i, j in combinations(range(len(coords)), 2):
@@ -103,15 +84,7 @@ def compute_bonds(atoms, cutoff=1.6):
 
 
 def create_molecular_graph(mol_data):
-    """
-    Convert molecular data to PyTorch Geometric Data object.
-    
-    Args:
-        mol_data: Dictionary containing 'atoms' and 'En' (energy) fields
-    
-    Returns:
-        torch_geometric.data.Data object
-    """
+
     atoms = mol_data['atoms']
     edges = compute_bonds(atoms, cutoff=1.6)
     
@@ -163,17 +136,7 @@ def evaluate(model, loader, device):
 
 
 def predict_energy(model, mol_data, device):
-    """
-    Predict energy for a single molecule.
-    
-    Args:
-        model: Trained MoleculeGNN model
-        mol_data: Dictionary containing molecular data
-        device: torch device (cpu or cuda)
-    
-    Returns:
-        Predicted energy value
-    """
+
     atoms = mol_data['atoms']
     edges = compute_bonds(atoms, cutoff=1.6)
     
